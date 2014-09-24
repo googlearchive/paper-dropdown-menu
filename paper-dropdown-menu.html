@@ -62,12 +62,12 @@ contains the selection state.
 
 <link href="../paper-shadow/paper-shadow.html" rel="import">
 
-<polymer-element name="paper-dropdown-menu">
+<polymer-element name="paper-dropdown-menu" attributes="disabled">
 <template>
 
   <link href="paper-dropdown-menu.css" rel="stylesheet">
 
-  <div id="control" layout horizontal selected?="{{selectedItem}}" on-tap="{{toggle}}">
+  <div id="control" layout horizontal selected?="{{selectedItem}}" on-tap="{{toggle}}" disabled?="{{ disabled }}">
     <div flex>
       {{selectedItem ? (selectedItem.label || selected) : label}}
     </div>
@@ -101,6 +101,16 @@ contains the selection state.
        * @default false
        */
       opened: false,
+
+      /**
+       * If true, this input cannot be focused and the user cannot change
+       * its value.
+       *
+       * @attribute disabled
+       * @type boolean
+       * @default false
+       */
+      disabled: false,
 
       /**
        * A label for the control. The label is displayed if no item is selected.
@@ -181,19 +191,29 @@ contains the selection state.
        * Vertically align the dropdown menu with the control.
        * @attribute valign
        * @type "top"|"bottom"
-       * @default "top"
+       * @default "bottom"
        */
       valign: 'top'
 
     },
 
     toggle: function() {
-      this.opened = !this.opened;
+      if(!this.disabled) {
+        this.opened = !this.opened;
+      }
     },
 
     activateAction: function() {
       this.opened = false;
-    }
+    },
+
+    disabledChanged: function() {
+      if (this.disabled) {
+        this.setAttribute('aria-disabled', true);
+      } else {
+        this.removeAttribute('aria-disabled');
+      }
+    },
 
   });
 
