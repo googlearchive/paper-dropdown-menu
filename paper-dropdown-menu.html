@@ -171,6 +171,12 @@ contains the selection state.
         this.$.label.classList.remove('selectedItem');
         this.selectedItemLabel = '';
       }
+    },
+    
+    toggleOverlay: function(event) {
+      if(event.detail != null) {
+        this.opened = !this.opened;
+      }
     }
 
   };
